@@ -1,34 +1,57 @@
 import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
 import './App.css'
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [name, setName] = useState('')
+  const [assignedFruit, setAssignedFruit] = useState(null)
+
+  const fruits = ['🍎 Apple', '🍌 Banana', '🍊 Orange', '🍇 Grapes', '🍓 Strawberry', '🍉 Watermelon', '🍑 Peach', '🍍 Pineapple', '🥝 Kiwi', '🥭 Mango']
+
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    if (name.trim()) {
+      const randomIndex = Math.floor(Math.random() * fruits.length)
+      setAssignedFruit(fruits[randomIndex])
+    }
+  }
+
+  const handleReset = () => {
+    setName('')
+    setAssignedFruit(null)
+  }
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+    <div className="app-container">
+      <h1>🎁 Secret Gyfter - Fruit Edition 🍎</h1>
+      <p className="subtitle">Enter your name to get randomly assigned a fruit!</p>
+      
+      {!assignedFruit ? (
+        <form onSubmit={handleSubmit} className="input-form">
+          <input
+            type="text"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            placeholder="Enter your name"
+            className="name-input"
+            required
+          />
+          <button type="submit" className="submit-button">
+            Get My Fruit!
+          </button>
+        </form>
+      ) : (
+        <div className="result-container">
+          <h2>Hello, {name}! 👋</h2>
+          <div className="fruit-result">
+            <p>Your fruit is:</p>
+            <h1 className="fruit-display">{assignedFruit}</h1>
+          </div>
+          <button onClick={handleReset} className="reset-button">
+            Try Again
+          </button>
+        </div>
+      )}
+    </div>
   )
 }
 
